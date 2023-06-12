@@ -3,6 +3,7 @@ package org.ctac.java103.controllers;
 import org.ctac.java103.models.CalorieIntake;
 
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -10,22 +11,17 @@ public class CalorieIntakeManager {
     private LinkedList<CalorieIntake> intakeList;
 
     public static void main(String[] args) {
-
-        CalorieIntakeManager CalorieIntakeManager = new CalorieIntakeManager();
-
+        CalorieIntakeManager calorieIntakeManager = new CalorieIntakeManager();
 
         CalorieIntake intake1 = new CalorieIntake("Apple", 100);
         CalorieIntake intake2 = new CalorieIntake("Pizza", 800);
         CalorieIntake intake3 = new CalorieIntake("Salad", 200);
 
+        calorieIntakeManager.addCalorieIntake(intake1);
+        calorieIntakeManager.addCalorieIntake(intake2);
+        calorieIntakeManager.addCalorieIntake(intake3);
 
-        CalorieIntakeManager.addCalorieIntake(intake1);
-        CalorieIntakeManager.addCalorieIntake(intake2);
-        CalorieIntakeManager.addCalorieIntake(intake3);
-
-        CalorieIntakeManager.menu();
-
-
+        calorieIntakeManager.menu();
     }
 
     public CalorieIntakeManager() {
@@ -58,8 +54,18 @@ public class CalorieIntakeManager {
         System.out.println("Enter the food: ");
         String food = scanner.nextLine();
 
-        System.out.println("Enter the calories: ");
-        int calories = scanner.nextInt();
+        int calories = 0;
+        boolean validCalories = false;
+        while (!validCalories) {
+            try {
+                System.out.println("Enter the calories: ");
+                calories = scanner.nextInt();
+                validCalories = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid calorie value.");
+                scanner.nextLine(); // Clear the input buffer
+            }
+        }
 
         CalorieIntake calorieIntake = new CalorieIntake(food, calories);
         intakeList.add(calorieIntake);
@@ -86,7 +92,6 @@ public class CalorieIntakeManager {
         int totalCalories = 0;
         Date currentDate = new Date();
 
-
         long cutoffTimeInMillis = currentDate.getTime() - (24 * 60 * 60 * 1000);
 
         for (CalorieIntake intake : intakeList) {
@@ -101,7 +106,6 @@ public class CalorieIntakeManager {
     public int calculateTotalCaloriesLast720Hours() {
         int totalCalories = 0;
         Date currentDate = new Date();
-
 
         long cutoffTimeInMillis = currentDate.getTime() - (720L * 60L * 60L * 1000L);
 
@@ -127,34 +131,39 @@ public class CalorieIntakeManager {
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
 
-            choice = scanner.nextInt();
+            try {
+                choice = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline character
 
-            switch (choice) {
-                case 1:
-                    createAndAddCalorieIntake();
-                    break;
-                case 2:
-                    printCalorieIntakeList();
-                    break;
-                case 3:
-                    int totalCaloriesLast24Hours = calculateTotalCaloriesLast24Hours();
-                    System.out.println("Total calories consumed in the last 24 hours: " + totalCaloriesLast24Hours);
-                    break;
-                case 4:
-                    int totalCaloriesLast720Hours = calculateTotalCaloriesLast720Hours();
-                    System.out.println("Total calories consumed in the last 30 days: " + totalCaloriesLast720Hours);
-                    break;
-                case 0:
-                    System.out.println("Exiting...");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
+                switch (choice) {
+                    case 1:
+                        createAndAddCalorieIntake();
+                        break;
+                    case 2:
+                        printCalorieIntakeList();
+                        break;
+                    case 3:
+                        int totalCaloriesLast24Hours = calculateTotalCaloriesLast24Hours();
+                        System.out.println("Total calories consumed in the last 24 hours: " + totalCaloriesLast24Hours);
+                        break;
+                    case 4:
+                        int totalCaloriesLast720Hours = calculateTotalCaloriesLast720Hours();
+                        System.out.println("Total calories consumed in the last 30 days: " + totalCaloriesLast720Hours);
+                        break;
+                    case 0:
+                        System.out.println("Exiting...");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
+
+                System.out.println();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid choice.");
+                scanner.nextLine(); // Clear the input buffer
+                choice = -1; // Set choice to an invalid value to repeat the loop
             }
-
-            System.out.println();
         } while (choice != 0);
     }
-
 }
-

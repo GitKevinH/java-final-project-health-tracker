@@ -3,12 +3,12 @@ package org.ctac.java103.controllers;
 import org.ctac.java103.models.User;
 
 import java.io.Serializable;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
 public class UserManagement implements Serializable {
     private LinkedList<User> userList;
-
 
     public UserManagement() {
         userList = new LinkedList<>();
@@ -43,14 +43,23 @@ public class UserManagement implements Serializable {
 
     public void findUserByUsername() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the username to find: ");
-        String username = scanner.nextLine();
-        User user = getUserByUsername(username);
-        if (user != null) {
-            System.out.println("User found: " + user.getUsername());
-            user.menu();
-        } else {
-            System.out.println("User not found.");
+        boolean validInput = false;
+        while (!validInput) {
+            try {
+                System.out.print("Enter the username to find: ");
+                String username = scanner.nextLine();
+                User user = getUserByUsername(username);
+                if (user != null) {
+                    System.out.println("User found: " + user.getUsername());
+                    user.menu();
+                } else {
+                    System.out.println("User not found.");
+                }
+                validInput = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid value.");
+                scanner.nextLine(); // Clear the input buffer
+            }
         }
     }
 
@@ -62,7 +71,4 @@ public class UserManagement implements Serializable {
         }
         return null;
     }
-
-
 }
-

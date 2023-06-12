@@ -15,8 +15,6 @@ public class ExerciseManager {
         exerciseManager.addExercise(exercise2);
 
         exerciseManager.menu();
-
-
     }
 
     public ExerciseManager() {
@@ -50,12 +48,31 @@ public class ExerciseManager {
         System.out.print("Enter exercise name: ");
         String name = scanner.nextLine();
 
-        System.out.print("Enter exercise duration (in minutes): ");
-        int duration = scanner.nextInt();
+        int duration = 0;
+        boolean validDuration = false;
+        while (!validDuration) {
+            try {
+                System.out.print("Enter exercise duration (in minutes): ");
+                duration = scanner.nextInt();
+                validDuration = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid duration.");
+                scanner.nextLine(); // Clear the input buffer
+            }
+        }
 
-        System.out.print("Enter calories burned: ");
-        int calsBurned = scanner.nextInt();
-
+        int calsBurned = 0;
+        boolean validCalsBurned = false;
+        while (!validCalsBurned) {
+            try {
+                System.out.print("Enter calories burned: ");
+                calsBurned = scanner.nextInt();
+                validCalsBurned = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid calorie value.");
+                scanner.nextLine(); // Clear the input buffer
+            }
+        }
 
         Exercise exercise = new Exercise(name, duration, calsBurned);
         exerciseList.add(exercise);
@@ -106,12 +123,6 @@ public class ExerciseManager {
         return totalCalories;
     }
 
-
-
-
-
-
-
     public void menu() {
         Scanner scanner = new Scanner(System.in);
 
@@ -119,34 +130,38 @@ public class ExerciseManager {
             System.out.println("Exercise Manager Menu");
             System.out.println("1. Add An exercise");
             System.out.println("2. Print All Exercises");
-            System.out.println("3. Calculate Total Calories from Exercises (last 30 days");
+            System.out.println("3. Calculate Total Calories from Exercises (last 30 days)");
             System.out.println("4. Exit");
 
             System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
 
-            switch (choice) {
-                case 1:
-                    createExercise();
-                    break;
-                case 2:
-                    printAllExercises();
-                    break;
-                case 3:
-                    System.out.println(calculateTotalCaloriesLast24Hours());
-                    break;
-                case 4:
-                    System.out.println("Exiting.. ");
-                    return;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline character
+
+                switch (choice) {
+                    case 1:
+                        createExercise();
+                        break;
+                    case 2:
+                        printAllExercises();
+                        break;
+                    case 3:
+                        System.out.println(calculateTotalCaloriesLast24Hours());
+                        break;
+                    case 4:
+                        System.out.println("Exiting.. ");
+                        return;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
+
+                System.out.println();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid choice.");
+                scanner.nextLine(); // Clear the input buffer
             }
-
-            System.out.println();
         }
     }
-
-
-
 }
-

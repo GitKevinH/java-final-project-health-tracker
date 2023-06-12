@@ -4,6 +4,7 @@ import org.ctac.java103.controllers.CalorieIntakeManager;
 import org.ctac.java103.controllers.ExerciseManager;
 import org.ctac.java103.controllers.SleepManager;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class User {
@@ -62,29 +63,33 @@ public class User {
             System.out.println("4. Health Data Analysis");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine();
 
-            switch (choice) {
-                case 1:
-                    sleepManager.menu();
-                    break;
-                case 2:
-                    calorieIntakeManager.menu();
-                    break;
-                case 3:
-                    exerciseManager.menu();
-                    break;
-                case 4:
-                    healthMenu();
-                    break;
-
-                case 0:
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
+                switch (choice) {
+                    case 1:
+                        sleepManager.menu();
+                        break;
+                    case 2:
+                        calorieIntakeManager.menu();
+                        break;
+                    case 3:
+                        exerciseManager.menu();
+                        break;
+                    case 4:
+                        healthMenu();
+                        break;
+                    case 0:
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine(); // Clear the input buffer
             }
         }
     }
@@ -100,44 +105,46 @@ public class User {
             System.out.println("4. Health Summary");
             System.out.println("0. Exit");
             System.out.print("Enter your choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine();
 
-            switch (choice) {
-                case 1:
-                    System.out.println();
-                    System.out.println("Calories Burned: " + exerciseManager.calculateTotalCaloriesLast24Hours());
-                    System.out.println("Calories Consumed: " + calorieIntakeManager.calculateTotalCaloriesLast24Hours());
-                    System.out.println("Difference in Calories burned over consumed: " + (exerciseManager.calculateTotalCaloriesLast24Hours()-calorieIntakeManager.calculateTotalCaloriesLast24Hours()));
-                    break;
-                case 2:
-                    System.out.println();
-                    System.out.println("Your Average Sleep Over 7 Days Was: " + sleepManager.calculateAverageSleepPerNumDays(7));
-                    break;
-                case 3:
-                    System.out.println();
-                    exerciseManager.printAllExercises();
-                    System.out.println();
-                    break;
-                case 4:
-                    System.out.println();
-                    System.out.println("Health Summary:");
-                    System.out.println("Average sleep over 30 days: " + sleepManager.calculateAverageSleepPerNumDays(30) );
-                    System.out.println("Calories consumed over 30 days: " + calorieIntakeManager.calculateTotalCaloriesLast720Hours());
-                    System.out.println("Calories burned over 30 days: " + exerciseManager.calculateTotalCaloriesLast720Hours());
-                    System.out.println("Difference in Calories burned over consumed last 30 days: " + (exerciseManager.calculateTotalCaloriesLast720Hours()-calorieIntakeManager.calculateTotalCaloriesLast720Hours()));
-                    System.out.println();
-                    break;
-
-                case 0:
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
+                switch (choice) {
+                    case 1:
+                        System.out.println();
+                        System.out.println("Calories Burned: " + exerciseManager.calculateTotalCaloriesLast24Hours());
+                        System.out.println("Calories Consumed: " + calorieIntakeManager.calculateTotalCaloriesLast24Hours());
+                        System.out.println("Difference in Calories burned over consumed: " + (exerciseManager.calculateTotalCaloriesLast24Hours() - calorieIntakeManager.calculateTotalCaloriesLast24Hours()));
+                        break;
+                    case 2:
+                        System.out.println();
+                        System.out.println("Your Average Sleep Over 7 Days Was: " + sleepManager.calculateAverageSleepPerNumDays(7));
+                        break;
+                    case 3:
+                        System.out.println();
+                        exerciseManager.printAllExercises();
+                        System.out.println();
+                        break;
+                    case 4:
+                        System.out.println();
+                        System.out.println("Health Summary:");
+                        System.out.println("Average sleep over 30 days: " + sleepManager.calculateAverageSleepPerNumDays(30));
+                        System.out.println("Calories consumed over 30 days: " + calorieIntakeManager.calculateTotalCaloriesLast720Hours());
+                        System.out.println("Calories burned over 30 days: " + exerciseManager.calculateTotalCaloriesLast720Hours());
+                        System.out.println("Difference in Calories burned over consumed last 30 days: " + (exerciseManager.calculateTotalCaloriesLast720Hours() - calorieIntakeManager.calculateTotalCaloriesLast720Hours()));
+                        System.out.println();
+                        break;
+                    case 0:
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine(); // Clear the input buffer
             }
         }
     }
-
 }
-

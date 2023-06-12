@@ -8,20 +8,15 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class SleepManager {
 
     public static void main(String[] args) {
-    SleepManager sleepManager = new SleepManager();
-    sleepManager.menu();
-
-
-
+        SleepManager sleepManager = new SleepManager();
+        sleepManager.menu();
     }
+
     private LinkedList<Sleep> sleepList;
     private static final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
@@ -89,7 +84,6 @@ public class SleepManager {
         }
     }
 
-
     //UI
 
     //Sleep time prompt
@@ -154,32 +148,37 @@ public class SleepManager {
             System.out.println("5. Exit");
             System.out.print("Enter your choice: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline character
 
-            switch (choice) {
-                case 1:
-                    promptAddSleepTime();
-                    break;
-                case 2:
-                    promptAddWakeTime();
-                    break;
-                case 3:
-                    double averageSleepPerWeek = calculateAverageSleepPerNumDays(1);
-                    System.out.println("Average Sleep per Week: " + averageSleepPerWeek + " hours");
-                    break;
-                case 4:
-                    printSleepObjects();
-                    break;
-                case 5:
-                    System.out.println("Exiting Sleep Manager. Goodbye!");
-                    return;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
+                switch (choice) {
+                    case 1:
+                        promptAddSleepTime();
+                        break;
+                    case 2:
+                        promptAddWakeTime();
+                        break;
+                    case 3:
+                        double averageSleepPerWeek = calculateAverageSleepPerNumDays(7);
+                        System.out.println("Average Sleep per Week: " + averageSleepPerWeek + " hours");
+                        break;
+                    case 4:
+                        printSleepObjects();
+                        break;
+                    case 5:
+                        System.out.println("Exiting Sleep Manager. Goodbye!");
+                        return;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
+
+                System.out.println(); // Print an empty line for separation
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid choice.");
+                scanner.nextLine(); // Clear the input buffer
             }
-
-            System.out.println(); // Print an empty line for separation
         }
     }
 }
