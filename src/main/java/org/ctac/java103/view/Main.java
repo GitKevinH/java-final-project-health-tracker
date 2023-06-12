@@ -1,4 +1,4 @@
-package org.ctac.java103;
+package org.ctac.java103.view;
 
 public class Main {
     public static void main(String[] args) {
