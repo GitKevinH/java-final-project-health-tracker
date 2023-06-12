@@ -10,6 +10,7 @@ public class Main {
     public static void main(String[] args) {
 
         //Could not get the darn file reader to work in time
+
         String fileName = "users.txt";
 
         /* UserManagement userManagement = UserManagementFileIO.loadUserManagement(fileName);
@@ -52,7 +53,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("Exercise Manager Menu");
+            System.out.println("Exercise Manager Menu - hint create a new user first");
             System.out.println("1. Login");
             System.out.println("2. Create New User");
             System.out.println("3. Exit");
