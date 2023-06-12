@@ -2,9 +2,7 @@ package org.ctac.java103.controllers;
 
 import org.ctac.java103.models.Exercise;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class ExerciseManager {
     private LinkedList<Exercise> exerciseList;
@@ -16,11 +14,9 @@ public class ExerciseManager {
         exerciseManager.addExercise(exercise1);
         exerciseManager.addExercise(exercise2);
 
-        // Calculate the total calories burned
-        int totalCalories = exerciseManager.calculateTotalCalories();
-        System.out.println("Total Calories Burned: " + totalCalories);
+        exerciseManager.menu();
 
-        exerciseManager.createExercise();
+
     }
 
     public ExerciseManager() {
@@ -64,7 +60,7 @@ public class ExerciseManager {
         Exercise exercise = new Exercise(name, duration, calsBurned);
         exerciseList.add(exercise);
 
-        System.out.println("Exercise created successfully.");
+        System.out.println("Exercise added.");
     }
 
     public void printAllExercises() {
@@ -74,19 +70,17 @@ public class ExerciseManager {
         }
     }
 
-    public int calculateTotalCalories() {
+    public int calculateTotalCaloriesLast24Hours() {
         int totalCalories = 0;
-        for (Exercise exercise : exerciseList) {
-            totalCalories += exercise.getCalsBurned();
-        }
-        return totalCalories;
-    }
-
-    public int calculateTotalCaloriesForDay(Date day) {
-        int totalCalories = 0;
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.DAY_OF_YEAR, -1);
+        Date twentyFourHoursAgo = calendar.getTime();
 
         for (Exercise exercise : exerciseList) {
-            if (exercise.getDate().equals(day)) {
+            Date exerciseDate = exercise.getDate();
+            if (exerciseDate.after(twentyFourHoursAgo) && exerciseDate.before(currentDate)) {
                 totalCalories += exercise.getCalsBurned();
             }
         }
@@ -94,14 +88,38 @@ public class ExerciseManager {
         return totalCalories;
     }
 
+    public int calculateTotalCaloriesLast720Hours() {
+        int totalCalories = 0;
+        Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.HOUR_OF_DAY, -720);
+        Date sevenTwentyHoursAgo = calendar.getTime();
+
+        for (Exercise exercise : exerciseList) {
+            Date exerciseDate = exercise.getDate();
+            if (exerciseDate.after(sevenTwentyHoursAgo) && exerciseDate.before(currentDate)) {
+                totalCalories += exercise.getCalsBurned();
+            }
+        }
+
+        return totalCalories;
+    }
+
+
+
+
+
+
+
     public void menu() {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.println("Exercise Manager Menu");
-            System.out.println("1. Add an exercise");
+            System.out.println("1. Add An exercise");
             System.out.println("2. Print All Exercises");
-            System.out.println("3. Calculate Total Calories from Exercises");
+            System.out.println("3. Calculate Total Calories from Exercises (last 30 days");
             System.out.println("4. Exit");
 
             System.out.print("Enter your choice: ");
@@ -115,7 +133,7 @@ public class ExerciseManager {
                     printAllExercises();
                     break;
                 case 3:
-                    System.out.println("Total calories logged (30 days): " +calculateTotalCalories());
+                    System.out.println(calculateTotalCaloriesLast24Hours());
                     break;
                 case 4:
                     System.out.println("Exiting.. ");
